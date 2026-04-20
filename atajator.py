@@ -57,7 +57,7 @@ class Atajator:
 
     def _on_exit(self):
         self.hook.stop()
-        self.root.quit()
+        self.root.after(0, self.root.quit)  # tkinter requiere llamadas desde el hilo principal
 
     def run(self):
         self._hook_thread.start()

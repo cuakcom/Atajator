@@ -30,6 +30,27 @@ ID_TOGGLE = 1001
 ID_EXIT   = 1002
 
 
+WNDPROC_TYPE = ctypes.WINFUNCTYPE(
+    ctypes.c_long, ctypes.wintypes.HWND,
+    ctypes.wintypes.UINT, ctypes.wintypes.WPARAM, ctypes.wintypes.LPARAM,
+)
+
+
+class WNDCLASSW(ctypes.Structure):
+    _fields_ = [
+        ("style",         ctypes.wintypes.UINT),
+        ("lpfnWndProc",   WNDPROC_TYPE),
+        ("cbClsExtra",    ctypes.c_int),
+        ("cbWndExtra",    ctypes.c_int),
+        ("hInstance",     ctypes.wintypes.HINSTANCE),
+        ("hIcon",         ctypes.wintypes.HICON),
+        ("hCursor",       ctypes.wintypes.HANDLE),
+        ("hbrBackground", ctypes.wintypes.HBRUSH),
+        ("lpszMenuName",  ctypes.wintypes.LPCWSTR),
+        ("lpszClassName", ctypes.wintypes.LPCWSTR),
+    ]
+
+
 class NOTIFYICONDATAW(ctypes.Structure):
     _fields_ = [
         ("cbSize",           ctypes.wintypes.DWORD),
@@ -56,13 +77,9 @@ class TrayIcon:
         self._thread.start()
 
     def _run(self):
-        WNDPROC = ctypes.WINFUNCTYPE(
-            ctypes.c_long, ctypes.wintypes.HWND,
-            ctypes.wintypes.UINT, ctypes.wintypes.WPARAM, ctypes.wintypes.LPARAM,
-        )
-        self._wndproc_ref = WNDPROC(self._wndproc)
+        self._wndproc_ref = WNDPROC_TYPE(self._wndproc)
 
-        wc = ctypes.wintypes.WNDCLASSW()
+        wc = WNDCLASSW()
         wc.lpfnWndProc   = self._wndproc_ref
         wc.hInstance     = kernel32.GetModuleHandleW(None)
         wc.lpszClassName = "AtajatorTray"
