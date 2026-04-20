@@ -4,51 +4,83 @@ echo  Atajator - Generando ejecutable portable
 echo ============================================
 echo.
 
-REM ── Buscar Python ────────────────────────────────────────────────────
 set PY=
+set EMBEDDED_PY=%~dp0tools\python\python.exe
 
-REM 1) python en PATH
+REM ── 1) Buscar Python ya instalado ────────────────────────────────────
 python --version >nul 2>&1
 if not errorlevel 1 ( set PY=python & goto :py_found )
 
-REM 2) python3 en PATH (algunas instalaciones)
 python3 --version >nul 2>&1
 if not errorlevel 1 ( set PY=python3 & goto :py_found )
 
-REM 3) Instalaciones estándar en AppData (sin admin, modo usuario)
 for /d %%D in ("%LOCALAPPDATA%\Programs\Python\Python3*") do (
     if exist "%%D\python.exe" ( set PY="%%D\python.exe" & goto :py_found )
 )
 
-REM 4) Python desde Microsoft Store
 if exist "%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe" (
     set PY="%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe"
     goto :py_found
 )
 
-REM 5) py launcher (Windows installer)
 py --version >nul 2>&1
 if not errorlevel 1 ( set PY=py & goto :py_found )
 
-echo ERROR: Python no encontrado.
+REM ── 2) Usar Python embebido local si ya fue descargado ───────────────
+if exist "%EMBEDDED_PY%" ( set PY="%EMBEDDED_PY%" & goto :py_found )
+
+REM ── 3) Descargar Python embebido con PowerShell (sin admin) ──────────
+echo Python no encontrado. Descargando Python embebido (sin instalacion)...
+echo Esto solo ocurre la primera vez.
 echo.
-echo Opciones para instalarlo SIN permisos de administrador:
-echo   - Descarga el instalador y marca "Install just for me":
-echo     https://www.python.org/downloads/
-echo   - O instala desde Microsoft Store (busca "Python 3")
+
+set PY_VER=3.12.10
+set PY_ZIP=%~dp0tools\python-embed.zip
+set PY_DIR=%~dp0tools\python
+
+powershell -NoProfile -Command ^
+  "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/%PY_VER%/python-%PY_VER%-embed-amd64.zip' -OutFile '%PY_ZIP%'" 2>&1
+if errorlevel 1 goto :no_internet
+
+powershell -NoProfile -Command ^
+  "Expand-Archive -Path '%PY_ZIP%' -DestinationPath '%PY_DIR%' -Force"
+del "%PY_ZIP%" >nul 2>&1
+
+REM Activar importacion de paquetes en Python embebido
+powershell -NoProfile -Command ^
+  "(Get-Content '%PY_DIR%\python312._pth') -replace '#import site','import site' | Set-Content '%PY_DIR%\python312._pth'"
+
+REM Descargar get-pip.py
+powershell -NoProfile -Command ^
+  "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile '%PY_DIR%\get-pip.py'"
+
+"%PY_DIR%\python.exe" "%PY_DIR%\get-pip.py" --quiet
+set PY="%PY_DIR%\python.exe"
+goto :py_found
+
+:no_internet
+echo.
+echo ERROR: No hay conexion a internet y Python no esta instalado.
+echo.
+echo Opciones:
+echo   A) Descarga el .exe ya compilado desde GitHub Actions:
+echo      https://github.com/cuakcom/Atajator/actions
+echo      (pestaña del ultimo build ^> Artifacts ^> Atajator-portable-windows)
+echo.
+echo   B) Instala Python sin admin en otro equipo y copia el .exe generado.
 echo.
 pause
 exit /b 1
 
 :py_found
-echo Python encontrado: %PY%
+echo Python: %PY%
 %PY% --version
 echo.
 
-REM ── Instalar PyInstaller si falta ─────────────────────────────────────
+REM ── Instalar PyInstaller ─────────────────────────────────────────────
 %PY% -c "import PyInstaller" >nul 2>&1
 if errorlevel 1 (
-    echo Instalando PyInstaller ^(solo la primera vez^)...
+    echo Instalando PyInstaller...
     %PY% -m pip install pyinstaller --quiet --user
     if errorlevel 1 (
         echo ERROR: No se pudo instalar PyInstaller.
@@ -57,8 +89,8 @@ if errorlevel 1 (
     )
 )
 
-REM ── Compilar ──────────────────────────────────────────────────────────
-echo Compilando Atajator...
+REM ── Compilar ─────────────────────────────────────────────────────────
+echo Compilando Atajator.exe...
 %PY% -m PyInstaller ^
     --onefile ^
     --windowed ^
@@ -70,7 +102,7 @@ echo Compilando Atajator...
 
 if errorlevel 1 (
     echo.
-    echo ERROR: La compilacion fallo. Revisa los mensajes anteriores.
+    echo ERROR: La compilacion fallo.
     pause
     exit /b 1
 )
@@ -78,7 +110,7 @@ if errorlevel 1 (
 echo.
 echo ============================================
 echo  Listo! Ejecutable en: dist\Atajator.exe
-echo  Copia ese .exe donde quieras.
-echo  No requiere instalacion ni permisos admin.
+echo  Copia ese .exe donde quieras y ejecutalo
+echo  directamente, sin instalar nada.
 echo ============================================
 pause

@@ -1,0 +1,39 @@
+name: Build portable EXE
+
+on:
+  push:
+    branches: ["main", "claude/keyboard-shortcut-helper-r5RQ7"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar PyInstaller
+        run: pip install pyinstaller
+
+      - name: Compilar Atajator.exe
+        run: |
+          python -m PyInstaller `
+            --onefile `
+            --windowed `
+            --name Atajator `
+            --add-data "shortcuts;shortcuts" `
+            --hidden-import tkinter `
+            --hidden-import tkinter.font `
+            atajator.py
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: Atajator-portable-windows
+          path: dist/Atajator.exe
+          retention-days: 30
