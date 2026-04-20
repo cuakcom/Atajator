@@ -1,0 +1,20 @@
+{
+  "name": "Visual Studio Code",
+  "shortcuts": [
+    {"action": "Guardar archivo", "shortcut": "Ctrl+S", "keywords": ["guardar", "save"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Paleta de comandos", "shortcut": "Ctrl+Mayús+P", "keywords": ["comando", "command palette", "paleta"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Buscar archivo", "shortcut": "Ctrl+P", "keywords": ["abrir", "buscar archivo", "go to file"], "class_names": [], "regions": []},
+    {"action": "Terminal integrado", "shortcut": "Ctrl+`", "keywords": ["terminal", "consola", "console"], "class_names": [], "regions": ["statusbar", "sidebar_left"]},
+    {"action": "Explorador de archivos", "shortcut": "Ctrl+Mayús+E", "keywords": ["explorador", "explorer", "archivos"], "class_names": [], "regions": ["sidebar_left", "toolbar"]},
+    {"action": "Buscar en archivos", "shortcut": "Ctrl+Mayús+F", "keywords": ["buscar", "search", "find in files"], "class_names": [], "regions": ["sidebar_left", "toolbar"]},
+    {"action": "Control de versiones (Git)", "shortcut": "Ctrl+Mayús+G", "keywords": ["git", "source control", "commit"], "class_names": [], "regions": ["sidebar_left", "statusbar"]},
+    {"action": "Depurar / Debug", "shortcut": "Ctrl+Mayús+D", "keywords": ["debug", "depurar", "run", "ejecutar"], "class_names": [], "regions": ["sidebar_left", "toolbar"]},
+    {"action": "Extensiones", "shortcut": "Ctrl+Mayús+X", "keywords": ["extensiones", "extensions", "plugins"], "class_names": [], "regions": ["sidebar_left"]},
+    {"action": "Formatear documento", "shortcut": "Mayús+Alt+F", "keywords": ["formatear", "format", "prettier"], "class_names": [], "regions": ["content"]},
+    {"action": "Ir a la definición", "shortcut": "F12", "keywords": ["definición", "definition", "go to"], "class_names": [], "regions": ["content"]},
+    {"action": "Renombrar símbolo", "shortcut": "F2", "keywords": ["renombrar", "rename", "refactor"], "class_names": [], "regions": ["content"]},
+    {"action": "Nueva pestaña / archivo", "shortcut": "Ctrl+N", "keywords": ["nuevo", "new", "nueva"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Cerrar pestaña", "shortcut": "Ctrl+W", "keywords": ["cerrar", "close"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Configuración", "shortcut": "Ctrl+,", "keywords": ["configuración", "settings", "opciones"], "class_names": [], "regions": ["toolbar"]}
+  ]
+}

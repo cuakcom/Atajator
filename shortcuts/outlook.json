@@ -1,0 +1,15 @@
+{
+  "name": "Microsoft Outlook",
+  "shortcuts": [
+    {"action": "Nuevo correo", "shortcut": "Ctrl+N  o  Ctrl+Mayús+M", "keywords": ["nuevo correo", "new email", "nuevo", "redactar"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Responder", "shortcut": "Ctrl+R", "keywords": ["responder", "reply"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Responder a todos", "shortcut": "Ctrl+Mayús+R", "keywords": ["responder todos", "reply all"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Reenviar", "shortcut": "Ctrl+F  o  Ctrl+W", "keywords": ["reenviar", "forward"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Enviar", "shortcut": "Ctrl+Enter", "keywords": ["enviar", "send"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Buscar", "shortcut": "Ctrl+E  o  F3", "keywords": ["buscar", "search", "find"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Ir al calendario", "shortcut": "Ctrl+2", "keywords": ["calendario", "calendar"], "class_names": [], "regions": ["sidebar_left"]},
+    {"action": "Ir a bandeja de entrada", "shortcut": "Ctrl+1", "keywords": ["correo", "mail", "bandeja", "inbox"], "class_names": [], "regions": ["sidebar_left"]},
+    {"action": "Marcar como leído/no leído", "shortcut": "Ctrl+Q  /  Ctrl+U", "keywords": ["leído", "no leído", "read", "unread"], "class_names": [], "regions": []},
+    {"action": "Nueva cita en calendario", "shortcut": "Ctrl+Mayús+A", "keywords": ["cita", "appointment", "evento", "reunión"], "class_names": [], "regions": ["toolbar"]}
+  ]
+}
