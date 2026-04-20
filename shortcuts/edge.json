@@ -1,0 +1,61 @@
+{
+  "name": "Microsoft Edge",
+  "shortcuts": [
+    {
+      "action": "Nueva pestaña",
+      "shortcut": "Ctrl+T",
+      "keywords": ["nueva pestaña", "new tab"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Cerrar pestaña",
+      "shortcut": "Ctrl+W",
+      "keywords": ["cerrar", "close", "×"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Barra de direcciones",
+      "shortcut": "Ctrl+L  o  F4",
+      "keywords": ["address", "url", "dirección"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Recargar página",
+      "shortcut": "F5  o  Ctrl+R",
+      "keywords": ["recargar", "reload", "refresh"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Añadir a favoritos",
+      "shortcut": "Ctrl+D",
+      "keywords": ["favorito", "bookmark", "estrella"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Abrir herramientas de desarrollo",
+      "shortcut": "F12",
+      "keywords": ["dev tools", "inspector", "herramientas"],
+      "class_names": [],
+      "regions": ["content"]
+    },
+    {
+      "action": "Vista inmersiva del lector",
+      "shortcut": "F9",
+      "keywords": ["lector", "reader", "inmersiva"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Buscar en la página",
+      "shortcut": "Ctrl+F",
+      "keywords": ["buscar", "find"],
+      "class_names": [],
+      "regions": ["content"]
+    }
+  ]
+}

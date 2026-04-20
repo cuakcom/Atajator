@@ -1,0 +1,131 @@
+{
+  "name": "Microsoft Word",
+  "shortcuts": [
+    {
+      "action": "Guardar",
+      "shortcut": "Ctrl+G  o  Ctrl+S",
+      "keywords": ["guardar", "save"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Deshacer",
+      "shortcut": "Ctrl+Z",
+      "keywords": ["deshacer", "undo"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Rehacer",
+      "shortcut": "Ctrl+Y",
+      "keywords": ["rehacer", "redo"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Negrita",
+      "shortcut": "Ctrl+N  o  Ctrl+B",
+      "keywords": ["negrita", "bold", "N"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Cursiva",
+      "shortcut": "Ctrl+K  o  Ctrl+I",
+      "keywords": ["cursiva", "italic", "K"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Subrayado",
+      "shortcut": "Ctrl+S  o  Ctrl+U",
+      "keywords": ["subrayado", "underline"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Alineación izquierda",
+      "shortcut": "Ctrl+Q  o  Ctrl+L",
+      "keywords": ["izquierda", "left", "align left"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Centrar texto",
+      "shortcut": "Ctrl+T  o  Ctrl+E",
+      "keywords": ["centrar", "center"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Alineación derecha",
+      "shortcut": "Ctrl+D  o  Ctrl+R",
+      "keywords": ["derecha", "right", "align right"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Justificar",
+      "shortcut": "Ctrl+J",
+      "keywords": ["justificar", "justify"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Buscar",
+      "shortcut": "Ctrl+F  o  Ctrl+B",
+      "keywords": ["buscar", "find", "search"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Reemplazar",
+      "shortcut": "Ctrl+H  o  Ctrl+L",
+      "keywords": ["reemplazar", "replace"],
+      "class_names": [],
+      "regions": []
+    },
+    {
+      "action": "Corrector ortográfico",
+      "shortcut": "F7",
+      "keywords": ["ortografía", "spell", "corrector", "revisar"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Imprimir",
+      "shortcut": "Ctrl+P",
+      "keywords": ["imprimir", "print"],
+      "class_names": [],
+      "regions": []
+    },
+    {
+      "action": "Insertar tabla",
+      "shortcut": "Alt → N → T",
+      "keywords": ["tabla", "table", "insertar tabla"],
+      "class_names": [],
+      "regions": ["toolbar", "menubar"]
+    },
+    {
+      "action": "Menú de cinta / Ribbon",
+      "shortcut": "Alt",
+      "keywords": ["inicio", "insertar", "diseño", "referencias", "revisar", "vista"],
+      "class_names": [],
+      "regions": ["menubar", "toolbar"]
+    },
+    {
+      "action": "Aumentar tamaño de fuente",
+      "shortcut": "Ctrl+>  o  Ctrl+Mayús+>",
+      "keywords": ["tamaño", "font size", "aumentar"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Reducir tamaño de fuente",
+      "shortcut": "Ctrl+<  o  Ctrl+Mayús+<",
+      "keywords": ["reducir", "font size", "tamaño"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    }
+  ]
+}

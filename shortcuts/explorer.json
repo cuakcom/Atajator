@@ -1,0 +1,117 @@
+{
+  "name": "Explorador de Windows",
+  "shortcuts": [
+    {
+      "action": "Abrir propiedades",
+      "shortcut": "Alt+Enter",
+      "keywords": ["propiedades", "properties"],
+      "class_names": [],
+      "regions": ["content"]
+    },
+    {
+      "action": "Renombrar archivo/carpeta",
+      "shortcut": "F2",
+      "keywords": ["renombrar", "rename"],
+      "class_names": [],
+      "regions": ["content"]
+    },
+    {
+      "action": "Eliminar (a la papelera)",
+      "shortcut": "Supr  o  Delete",
+      "keywords": ["eliminar", "borrar", "delete"],
+      "class_names": [],
+      "regions": ["content"]
+    },
+    {
+      "action": "Eliminar definitivamente",
+      "shortcut": "Mayús+Supr",
+      "keywords": ["eliminar", "borrar permanente"],
+      "class_names": [],
+      "regions": []
+    },
+    {
+      "action": "Copiar",
+      "shortcut": "Ctrl+C",
+      "keywords": ["copiar", "copy"],
+      "class_names": [],
+      "regions": ["content", "toolbar"]
+    },
+    {
+      "action": "Pegar",
+      "shortcut": "Ctrl+V",
+      "keywords": ["pegar", "paste"],
+      "class_names": [],
+      "regions": ["content", "toolbar"]
+    },
+    {
+      "action": "Cortar",
+      "shortcut": "Ctrl+X",
+      "keywords": ["cortar", "cut", "mover"],
+      "class_names": [],
+      "regions": ["content", "toolbar"]
+    },
+    {
+      "action": "Seleccionar todo",
+      "shortcut": "Ctrl+A",
+      "keywords": ["seleccionar todo", "select all"],
+      "class_names": [],
+      "regions": ["content"]
+    },
+    {
+      "action": "Nueva carpeta",
+      "shortcut": "Ctrl+Mayús+N",
+      "keywords": ["nueva carpeta", "new folder"],
+      "class_names": [],
+      "regions": ["content", "toolbar"]
+    },
+    {
+      "action": "Barra de direcciones",
+      "shortcut": "Alt+D  o  F4",
+      "keywords": ["dirección", "ruta", "path", "address"],
+      "class_names": ["Edit", "Address Band Root"],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Buscar",
+      "shortcut": "Ctrl+F  o  F3",
+      "keywords": ["buscar", "search", "find"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Subir un nivel",
+      "shortcut": "Alt+↑",
+      "keywords": ["subir", "atrás", "back", "up"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Actualizar vista",
+      "shortcut": "F5",
+      "keywords": ["actualizar", "refresh", "recargar"],
+      "class_names": [],
+      "regions": ["toolbar", "content"]
+    },
+    {
+      "action": "Cambiar a vista detallada",
+      "shortcut": "Ctrl+Mayús+6",
+      "keywords": ["detalles", "details", "lista", "vista"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Panel de vista previa",
+      "shortcut": "Alt+P",
+      "keywords": ["vista previa", "preview"],
+      "class_names": [],
+      "regions": ["toolbar"]
+    },
+    {
+      "action": "Abrir nueva ventana",
+      "shortcut": "Ctrl+N",
+      "keywords": ["nueva ventana", "new window"],
+      "class_names": [],
+      "regions": []
+    }
+  ]
+}
