@@ -12,12 +12,35 @@ shell32  = ctypes.windll.shell32
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
-user32.CreateWindowExW.restype    = ctypes.wintypes.HWND
-user32.RegisterClassW.restype     = ctypes.wintypes.ATOM
-user32.LoadIconW.restype          = ctypes.wintypes.HICON
-user32.CreatePopupMenu.restype    = ctypes.wintypes.HMENU
-user32.DefWindowProcW.restype     = ctypes.c_long
+user32.CreateWindowExW.restype = ctypes.wintypes.HWND
+user32.CreateWindowExW.argtypes = [
+    ctypes.wintypes.DWORD,      # dwExStyle
+    ctypes.wintypes.LPCWSTR,    # lpClassName
+    ctypes.wintypes.LPCWSTR,    # lpWindowName
+    ctypes.wintypes.DWORD,      # dwStyle
+    ctypes.c_int,               # x
+    ctypes.c_int,               # y
+    ctypes.c_int,               # nWidth
+    ctypes.c_int,               # nHeight
+    ctypes.wintypes.HWND,       # hWndParent
+    ctypes.wintypes.HMENU,      # hMenu
+    ctypes.wintypes.HINSTANCE,  # hInstance
+    ctypes.c_void_p,            # lpParam
+]
+user32.RegisterClassW.restype = ctypes.wintypes.ATOM
+user32.RegisterClassW.argtypes = [ctypes.POINTER(WNDCLASSW)]
+user32.LoadIconW.restype = ctypes.wintypes.HICON
+user32.LoadIconW.argtypes = [ctypes.wintypes.HINSTANCE, ctypes.wintypes.LPCWSTR]
+user32.CreatePopupMenu.restype = ctypes.wintypes.HMENU
+user32.DefWindowProcW.restype = ctypes.c_long
+user32.DefWindowProcW.argtypes = [
+    ctypes.wintypes.HWND,
+    ctypes.wintypes.UINT,
+    ctypes.wintypes.WPARAM,
+    ctypes.wintypes.LPARAM,
+]
 kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
+kernel32.GetModuleHandleW.argtypes = [ctypes.wintypes.LPCWSTR]
 
 WM_USER          = 0x0400
 TRAY_MSG         = WM_USER + 1

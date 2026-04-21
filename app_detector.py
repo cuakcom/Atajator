@@ -12,9 +12,24 @@ kernel32 = ctypes.windll.kernel32
 # Sin restype explícito ctypes devuelve c_int (32 bits), truncando HWNDs en x64.
 user32.GetForegroundWindow.restype  = ctypes.wintypes.HWND
 user32.WindowFromPoint.restype      = ctypes.wintypes.HWND
+user32.WindowFromPoint.argtypes     = [ctypes.wintypes.POINT]
 user32.GetWindowTextLengthW.restype = ctypes.c_int
+user32.GetWindowTextLengthW.argtypes = [ctypes.wintypes.HWND]
+user32.GetWindowTextW.argtypes      = [ctypes.wintypes.HWND, ctypes.c_wchar_p, ctypes.c_int]
+user32.GetClassNameW.argtypes       = [ctypes.wintypes.HWND, ctypes.c_wchar_p, ctypes.c_int]
+user32.GetWindowRect.argtypes       = [ctypes.wintypes.HWND, ctypes.POINTER(RECT)]
+user32.GetWindowThreadProcessId.argtypes = [ctypes.wintypes.HWND, ctypes.POINTER(ctypes.wintypes.DWORD)]
 kernel32.OpenProcess.restype        = ctypes.wintypes.HANDLE
+kernel32.OpenProcess.argtypes       = [ctypes.wintypes.DWORD, ctypes.wintypes.BOOL, ctypes.wintypes.DWORD]
+kernel32.QueryFullProcessImageNameW.argtypes = [
+    ctypes.wintypes.HANDLE,
+    ctypes.wintypes.DWORD,
+    ctypes.c_wchar_p,
+    ctypes.POINTER(ctypes.wintypes.DWORD),
+]
+kernel32.CloseHandle.argtypes = [ctypes.wintypes.HANDLE]
 kernel32.GetModuleHandleW.restype   = ctypes.wintypes.HMODULE
+kernel32.GetModuleHandleW.argtypes  = [ctypes.wintypes.LPCWSTR]
 
 PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 

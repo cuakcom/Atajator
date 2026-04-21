@@ -10,15 +10,6 @@ from logger import log
 WH_MOUSE_LL = 14
 WM_LBUTTONDOWN = 0x0201
 
-user32   = ctypes.windll.user32
-kernel32 = ctypes.windll.kernel32
-
-user32.SetWindowsHookExW.restype  = ctypes.wintypes.HHOOK
-user32.CallNextHookEx.restype     = ctypes.c_int
-user32.GetMessageW.restype        = ctypes.c_int
-kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
-
-
 class MSLLHOOKSTRUCT(ctypes.Structure):
     _fields_ = [
         ("pt", ctypes.wintypes.POINT),
@@ -34,6 +25,26 @@ HOOKPROC = ctypes.WINFUNCTYPE(
     ctypes.wintypes.WPARAM,
     ctypes.wintypes.LPARAM,
 )
+
+user32   = ctypes.windll.user32
+kernel32 = ctypes.windll.kernel32
+
+user32.SetWindowsHookExW.restype  = ctypes.wintypes.HHOOK
+user32.SetWindowsHookExW.argtypes = [
+    ctypes.c_int,                   # idHook
+    HOOKPROC,                       # lpfn
+    ctypes.wintypes.HINSTANCE,      # hmod
+    ctypes.wintypes.DWORD,          # dwThreadId
+]
+user32.CallNextHookEx.restype     = ctypes.c_int
+user32.CallNextHookEx.argtypes    = [
+    ctypes.wintypes.HHOOK,          # hhk
+    ctypes.c_int,                   # nCode
+    ctypes.wintypes.WPARAM,         # wParam
+    ctypes.wintypes.LPARAM,         # lParam
+]
+user32.GetMessageW.restype        = ctypes.c_int
+kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
 
 
 class MouseHook:
@@ -55,11 +66,12 @@ class MouseHook:
             return user32.CallNextHookEx(self._hook_id, nCode, wParam, lParam)
 
         self._proc_ref = HOOKPROC(_proc)
+        # Para hooks globales en código de aplicación (no DLL), hmod=0
         self._hook_id = user32.SetWindowsHookExW(
             WH_MOUSE_LL,
             self._proc_ref,
-            kernel32.GetModuleHandleW(None),
-            0,
+            0,  # NULL: el hook está en la aplicación, no en una DLL
+            0,  # dwThreadId=0: hook global
         )
         log(f"HOOK SetWindowsHookExW id={self._hook_id}")
         if not self._hook_id:

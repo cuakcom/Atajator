@@ -9,6 +9,13 @@ GWL_EXSTYLE      = -20
 WS_EX_NOACTIVATE = 0x08000000
 WS_EX_TOOLWINDOW = 0x00000080
 
+# Declarar argtypes para evitar errores de conversión de tipos
+_user32 = ctypes.windll.user32
+_user32.GetWindowLongW.restype = ctypes.c_long
+_user32.GetWindowLongW.argtypes = [ctypes.wintypes.HWND, ctypes.c_int]
+_user32.SetWindowLongW.restype = ctypes.c_long
+_user32.SetWindowLongW.argtypes = [ctypes.wintypes.HWND, ctypes.c_int, ctypes.c_long]
+
 DARK_BG   = "#1e1e2e"
 ACCENT    = "#89b4fa"
 TEXT_MAIN = "#cdd6f4"
@@ -78,8 +85,8 @@ class ShortcutOverlay:
     def _no_activate(popup: tk.Toplevel):
         try:
             hwnd = popup.winfo_id()
-            ex   = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
-            ctypes.windll.user32.SetWindowLongW(
+            ex   = _user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+            _user32.SetWindowLongW(
                 hwnd, GWL_EXSTYLE, ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
             )
         except Exception:
