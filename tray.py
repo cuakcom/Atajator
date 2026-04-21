@@ -10,6 +10,13 @@ shell32  = ctypes.windll.shell32
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
+# Declarar restypes para evitar truncamiento de handles en x64.
+user32.CreateWindowExW.restype   = ctypes.wintypes.HWND
+user32.RegisterClassW.restype    = ctypes.wintypes.ATOM
+user32.LoadIconW.restype         = ctypes.wintypes.HICON
+user32.CreatePopupMenu.restype   = ctypes.wintypes.HMENU
+kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
+
 WM_USER          = 0x0400
 TRAY_MSG         = WM_USER + 1
 NIM_ADD          = 0x00000000
@@ -77,16 +84,17 @@ class TrayIcon:
         self._thread.start()
 
     def _run(self):
-        self._wndproc_ref = WNDPROC_TYPE(self._wndproc)
+        self._wndproc_ref  = WNDPROC_TYPE(self._wndproc)
+        self._class_name   = "AtajatorTray"   # mantener referencia viva
 
         wc = WNDCLASSW()
         wc.lpfnWndProc   = self._wndproc_ref
         wc.hInstance     = kernel32.GetModuleHandleW(None)
-        wc.lpszClassName = "AtajatorTray"
+        wc.lpszClassName = self._class_name
         user32.RegisterClassW(ctypes.byref(wc))
 
         self._hwnd = user32.CreateWindowExW(
-            0, "AtajatorTray", "Atajator",
+            0, self._class_name, "Atajator",
             0, 0, 0, 0, 0, 0, 0,
             kernel32.GetModuleHandleW(None), 0,
         )

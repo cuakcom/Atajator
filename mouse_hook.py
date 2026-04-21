@@ -9,6 +9,13 @@ import threading
 WH_MOUSE_LL = 14
 WM_LBUTTONDOWN = 0x0201
 
+# Declarar restypes para evitar truncamiento de handles en x64.
+_user32 = ctypes.windll.user32
+_kernel32 = ctypes.windll.kernel32
+_user32.SetWindowsHookExW.restype  = ctypes.wintypes.HHOOK
+_user32.CallNextHookEx.restype     = ctypes.c_int
+_kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
+
 class MSLLHOOKSTRUCT(ctypes.Structure):
     _fields_ = [
         ("pt", ctypes.wintypes.POINT),

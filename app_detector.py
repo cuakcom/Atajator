@@ -9,6 +9,13 @@ import os
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
+# Sin restype explícito ctypes devuelve c_int (32 bits), truncando HWNDs en x64.
+user32.GetForegroundWindow.restype  = ctypes.wintypes.HWND
+user32.WindowFromPoint.restype      = ctypes.wintypes.HWND
+user32.GetWindowTextLengthW.restype = ctypes.c_int
+kernel32.OpenProcess.restype        = ctypes.wintypes.HANDLE
+kernel32.GetModuleHandleW.restype   = ctypes.wintypes.HMODULE
+
 PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 
 class RECT(ctypes.Structure):

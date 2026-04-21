@@ -79,6 +79,17 @@ class ShortcutMatcher:
                 "app":        db_entry.get("name", key),
                 "confidence": best_score,
             }
+
+        # App reconocida pero sin match: mostrar el atajo más usado como sugerencia
+        shortcuts = db_entry.get("shortcuts", [])
+        if shortcuts:
+            first = shortcuts[0]
+            return {
+                "shortcut":   first["shortcut"],
+                "action":     first["action"],
+                "app":        db_entry.get("name", key),
+                "confidence": 0,
+            }
         return None
 
     @staticmethod
