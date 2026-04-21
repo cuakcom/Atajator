@@ -6,15 +6,17 @@ import ctypes
 import ctypes.wintypes
 import threading
 
+from logger import log
+
 shell32  = ctypes.windll.shell32
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
-# Declarar restypes para evitar truncamiento de handles en x64.
-user32.CreateWindowExW.restype   = ctypes.wintypes.HWND
-user32.RegisterClassW.restype    = ctypes.wintypes.ATOM
-user32.LoadIconW.restype         = ctypes.wintypes.HICON
-user32.CreatePopupMenu.restype   = ctypes.wintypes.HMENU
+user32.CreateWindowExW.restype    = ctypes.wintypes.HWND
+user32.RegisterClassW.restype     = ctypes.wintypes.ATOM
+user32.LoadIconW.restype          = ctypes.wintypes.HICON
+user32.CreatePopupMenu.restype    = ctypes.wintypes.HMENU
+user32.DefWindowProcW.restype     = ctypes.c_long
 kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
 
 WM_USER          = 0x0400
@@ -25,6 +27,7 @@ NIF_MESSAGE      = 0x00000001
 NIF_ICON         = 0x00000002
 NIF_TIP          = 0x00000004
 WM_RBUTTONUP     = 0x0205
+WM_LBUTTONUP     = 0x0202
 WM_DESTROY       = 0x0002
 WM_COMMAND       = 0x0111
 MF_STRING        = 0x00000000
@@ -58,6 +61,17 @@ class WNDCLASSW(ctypes.Structure):
     ]
 
 
+class GUID(ctypes.Structure):
+    _fields_ = [
+        ("Data1", ctypes.c_ulong),
+        ("Data2", ctypes.c_ushort),
+        ("Data3", ctypes.c_ushort),
+        ("Data4", ctypes.c_ubyte * 8),
+    ]
+
+
+# NOTIFYICONDATAW completo. Shell_NotifyIcon valida cbSize contra versiones
+# conocidas del struct; si pasamos uno truncado, la llamada falla silenciosamente.
 class NOTIFYICONDATAW(ctypes.Structure):
     _fields_ = [
         ("cbSize",           ctypes.wintypes.DWORD),
@@ -67,6 +81,14 @@ class NOTIFYICONDATAW(ctypes.Structure):
         ("uCallbackMessage", ctypes.wintypes.UINT),
         ("hIcon",            ctypes.wintypes.HICON),
         ("szTip",            ctypes.c_wchar * 128),
+        ("dwState",          ctypes.wintypes.DWORD),
+        ("dwStateMask",      ctypes.wintypes.DWORD),
+        ("szInfo",           ctypes.c_wchar * 256),
+        ("uVersion",         ctypes.wintypes.UINT),
+        ("szInfoTitle",      ctypes.c_wchar * 64),
+        ("dwInfoFlags",      ctypes.wintypes.DWORD),
+        ("guidItem",         GUID),
+        ("hBalloonIcon",     ctypes.wintypes.HICON),
     ]
 
 
@@ -78,30 +100,43 @@ class TrayIcon:
         self._hwnd      = None
         self._nid       = None
         self._enabled   = True
-        self._thread    = threading.Thread(target=self._run, daemon=True)
+        self._thread    = threading.Thread(target=self._run_safe, daemon=True)
 
     def start(self):
         self._thread.start()
 
+    def _run_safe(self):
+        try:
+            self._run()
+        except Exception as e:
+            log(f"TRAY ERROR: {type(e).__name__}: {e}")
+
     def _run(self):
-        self._wndproc_ref  = WNDPROC_TYPE(self._wndproc)
-        self._class_name   = "AtajatorTray"   # mantener referencia viva
+        self._wndproc_ref = WNDPROC_TYPE(self._wndproc)
+        self._class_name  = "AtajatorTrayClass"
 
         wc = WNDCLASSW()
         wc.lpfnWndProc   = self._wndproc_ref
         wc.hInstance     = kernel32.GetModuleHandleW(None)
         wc.lpszClassName = self._class_name
-        user32.RegisterClassW(ctypes.byref(wc))
+        atom = user32.RegisterClassW(ctypes.byref(wc))
+        log(f"TRAY RegisterClassW atom={atom}")
 
         self._hwnd = user32.CreateWindowExW(
             0, self._class_name, "Atajator",
             0, 0, 0, 0, 0, 0, 0,
             kernel32.GetModuleHandleW(None), 0,
         )
+        log(f"TRAY CreateWindowExW hwnd={self._hwnd}")
+        if not self._hwnd:
+            err = kernel32.GetLastError()
+            log(f"TRAY CreateWindowExW fallo, GetLastError={err}")
+            return
+
         self._add_icon()
 
         msg = ctypes.wintypes.MSG()
-        while user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
+        while user32.GetMessageW(ctypes.byref(msg), None, 0, 0) > 0:
             user32.TranslateMessage(ctypes.byref(msg))
             user32.DispatchMessageW(ctypes.byref(msg))
 
@@ -115,7 +150,8 @@ class TrayIcon:
         nid.hIcon            = user32.LoadIconW(0, IDI_APPLICATION)
         nid.szTip            = self._tooltip
         self._nid            = nid
-        shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(nid))
+        ok = shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(nid))
+        log(f"TRAY Shell_NotifyIconW NIM_ADD ok={ok} cbSize={nid.cbSize} hIcon={nid.hIcon}")
 
     def _remove_icon(self):
         if self._nid:
@@ -123,7 +159,7 @@ class TrayIcon:
 
     def _show_menu(self):
         hmenu = user32.CreatePopupMenu()
-        label = "✓ Activo" if self._enabled else "  Pausado"
+        label = "Activo (clic para pausar)" if self._enabled else "Pausado (clic para activar)"
         user32.AppendMenuW(hmenu, MF_STRING, ID_TOGGLE, label)
         user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
         user32.AppendMenuW(hmenu, MF_STRING, ID_EXIT, "Salir")
@@ -139,7 +175,7 @@ class TrayIcon:
 
     def _wndproc(self, hwnd, msg, wparam, lparam):
         if msg == TRAY_MSG:
-            if lparam == WM_RBUTTONUP:
+            if lparam == WM_RBUTTONUP or lparam == WM_LBUTTONUP:
                 self._show_menu()
                 return 0
         elif msg == WM_COMMAND:
