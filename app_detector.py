@@ -6,6 +6,12 @@ import ctypes
 import ctypes.wintypes
 import os
 
+# Definir estructuras ANTES de usarlas en argtypes
+class RECT(ctypes.Structure):
+    _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
+                ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+
+
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
@@ -32,10 +38,6 @@ kernel32.GetModuleHandleW.restype   = ctypes.wintypes.HMODULE
 kernel32.GetModuleHandleW.argtypes  = [ctypes.wintypes.LPCWSTR]
 
 PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
-
-class RECT(ctypes.Structure):
-    _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
-                ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
 
 
 def _get_process_name(hwnd: int) -> str:
