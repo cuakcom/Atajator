@@ -12,36 +12,7 @@ shell32  = ctypes.windll.shell32
 user32   = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 
-user32.CreateWindowExW.restype = ctypes.wintypes.HWND
-user32.CreateWindowExW.argtypes = [
-    ctypes.wintypes.DWORD,      # dwExStyle
-    ctypes.wintypes.LPCWSTR,    # lpClassName
-    ctypes.wintypes.LPCWSTR,    # lpWindowName
-    ctypes.wintypes.DWORD,      # dwStyle
-    ctypes.c_int,               # x
-    ctypes.c_int,               # y
-    ctypes.c_int,               # nWidth
-    ctypes.c_int,               # nHeight
-    ctypes.wintypes.HWND,       # hWndParent
-    ctypes.wintypes.HMENU,      # hMenu
-    ctypes.wintypes.HINSTANCE,  # hInstance
-    ctypes.c_void_p,            # lpParam
-]
-user32.RegisterClassW.restype = ctypes.wintypes.ATOM
-user32.RegisterClassW.argtypes = [ctypes.POINTER(WNDCLASSW)]
-user32.LoadIconW.restype = ctypes.wintypes.HICON
-user32.LoadIconW.argtypes = [ctypes.wintypes.HINSTANCE, ctypes.wintypes.LPCWSTR]
-user32.CreatePopupMenu.restype = ctypes.wintypes.HMENU
-user32.DefWindowProcW.restype = ctypes.c_long
-user32.DefWindowProcW.argtypes = [
-    ctypes.wintypes.HWND,
-    ctypes.wintypes.UINT,
-    ctypes.wintypes.WPARAM,
-    ctypes.wintypes.LPARAM,
-]
-kernel32.GetModuleHandleW.restype = ctypes.wintypes.HMODULE
-kernel32.GetModuleHandleW.argtypes = [ctypes.wintypes.LPCWSTR]
-
+# ── Constantes ────────────────────────────────────────────────────────
 WM_USER          = 0x0400
 TRAY_MSG         = WM_USER + 1
 NIM_ADD          = 0x00000000
@@ -58,11 +29,10 @@ MF_SEPARATOR     = 0x00000800
 TPM_BOTTOMALIGN  = 0x0020
 TPM_RIGHTALIGN   = 0x0008
 IDI_APPLICATION  = 32512
+ID_TOGGLE        = 1001
+ID_EXIT          = 1002
 
-ID_TOGGLE = 1001
-ID_EXIT   = 1002
-
-
+# ── Estructuras y tipos — deben ir ANTES de usarlos en argtypes ───────
 WNDPROC_TYPE = ctypes.WINFUNCTYPE(
     ctypes.c_long, ctypes.wintypes.HWND,
     ctypes.wintypes.UINT, ctypes.wintypes.WPARAM, ctypes.wintypes.LPARAM,
@@ -93,8 +63,6 @@ class GUID(ctypes.Structure):
     ]
 
 
-# NOTIFYICONDATAW completo. Shell_NotifyIcon valida cbSize contra versiones
-# conocidas del struct; si pasamos uno truncado, la llamada falla silenciosamente.
 class NOTIFYICONDATAW(ctypes.Structure):
     _fields_ = [
         ("cbSize",           ctypes.wintypes.DWORD),
@@ -115,6 +83,34 @@ class NOTIFYICONDATAW(ctypes.Structure):
     ]
 
 
+# ── Declarar restype/argtypes DESPUÉS de definir los tipos ────────────
+user32.CreateWindowExW.restype  = ctypes.wintypes.HWND
+user32.CreateWindowExW.argtypes = [
+    ctypes.wintypes.DWORD,
+    ctypes.wintypes.LPCWSTR,
+    ctypes.wintypes.LPCWSTR,
+    ctypes.wintypes.DWORD,
+    ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int,
+    ctypes.wintypes.HWND,
+    ctypes.wintypes.HMENU,
+    ctypes.wintypes.HINSTANCE,
+    ctypes.c_void_p,
+]
+user32.RegisterClassW.restype  = ctypes.wintypes.ATOM
+user32.RegisterClassW.argtypes = [ctypes.POINTER(WNDCLASSW)]
+user32.LoadIconW.restype       = ctypes.wintypes.HICON
+user32.LoadIconW.argtypes      = [ctypes.wintypes.HINSTANCE, ctypes.wintypes.LPCWSTR]
+user32.CreatePopupMenu.restype = ctypes.wintypes.HMENU
+user32.DefWindowProcW.restype  = ctypes.c_long
+user32.DefWindowProcW.argtypes = [
+    ctypes.wintypes.HWND, ctypes.wintypes.UINT,
+    ctypes.wintypes.WPARAM, ctypes.wintypes.LPARAM,
+]
+kernel32.GetModuleHandleW.restype  = ctypes.wintypes.HMODULE
+kernel32.GetModuleHandleW.argtypes = [ctypes.wintypes.LPCWSTR]
+
+
+# ── Clase principal ───────────────────────────────────────────────────
 class TrayIcon:
     def __init__(self, tooltip: str, on_toggle, on_exit):
         self._tooltip   = tooltip
@@ -148,7 +144,7 @@ class TrayIcon:
         self._hwnd = user32.CreateWindowExW(
             0, self._class_name, "Atajator",
             0, 0, 0, 0, 0, 0, 0,
-            kernel32.GetModuleHandleW(None), 0,
+            kernel32.GetModuleHandleW(None), None,
         )
         log(f"TRAY CreateWindowExW hwnd={self._hwnd}")
         if not self._hwnd:
@@ -170,11 +166,11 @@ class TrayIcon:
         nid.uID              = 1
         nid.uFlags           = NIF_MESSAGE | NIF_ICON | NIF_TIP
         nid.uCallbackMessage = TRAY_MSG
-        nid.hIcon            = user32.LoadIconW(0, IDI_APPLICATION)
+        nid.hIcon            = user32.LoadIconW(None, IDI_APPLICATION)
         nid.szTip            = self._tooltip
         self._nid            = nid
         ok = shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(nid))
-        log(f"TRAY Shell_NotifyIconW NIM_ADD ok={ok} cbSize={nid.cbSize} hIcon={nid.hIcon}")
+        log(f"TRAY Shell_NotifyIconW ok={ok} cbSize={nid.cbSize}")
 
     def _remove_icon(self):
         if self._nid:
