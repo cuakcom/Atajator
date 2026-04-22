@@ -1,0 +1,18 @@
+{
+  "name": "Microsoft Word",
+  "shortcuts": [
+    {"action": "Guardar", "shortcut": "Ctrl+G  o  Ctrl+S", "keywords": ["guardar", "save"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Deshacer", "shortcut": "Ctrl+Z", "keywords": ["deshacer", "undo"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Rehacer", "shortcut": "Ctrl+Y", "keywords": ["rehacer", "redo"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Negrita", "shortcut": "Ctrl+N  o  Ctrl+B", "keywords": ["negrita", "bold"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Cursiva", "shortcut": "Ctrl+K  o  Ctrl+I", "keywords": ["cursiva", "italic"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Subrayado", "shortcut": "Ctrl+S  o  Ctrl+U", "keywords": ["subrayado", "underline"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Centrar texto", "shortcut": "Ctrl+T  o  Ctrl+E", "keywords": ["centrar", "center"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Justificar", "shortcut": "Ctrl+J", "keywords": ["justificar", "justify"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Buscar", "shortcut": "Ctrl+F  o  Ctrl+B", "keywords": ["buscar", "find", "search"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Reemplazar", "shortcut": "Ctrl+H  o  Ctrl+L", "keywords": ["reemplazar", "replace"], "class_names": [], "regions": []},
+    {"action": "Corrector ortográfico", "shortcut": "F7", "keywords": ["ortografía", "spell", "corrector"], "class_names": [], "regions": ["toolbar"]},
+    {"action": "Imprimir", "shortcut": "Ctrl+P", "keywords": ["imprimir", "print"], "class_names": [], "regions": []},
+    {"action": "Menú de cinta", "shortcut": "Alt", "keywords": ["inicio", "insertar", "diseño", "referencias", "revisar", "vista"], "class_names": [], "regions": ["menubar", "toolbar"]}
+  ]
+}

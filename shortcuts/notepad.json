@@ -1,0 +1,14 @@
+{
+  "name": "Bloc de Notas",
+  "shortcuts": [
+    {"action": "Guardar", "shortcut": "Ctrl+S", "keywords": ["guardar", "save"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Guardar como", "shortcut": "Ctrl+Mayús+S", "keywords": ["guardar como", "save as"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Abrir archivo", "shortcut": "Ctrl+O  o  Ctrl+A", "keywords": ["abrir", "open"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Nuevo archivo", "shortcut": "Ctrl+N", "keywords": ["nuevo", "new"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Buscar", "shortcut": "Ctrl+F  o  Ctrl+B", "keywords": ["buscar", "find"], "class_names": [], "regions": ["menubar", "content"]},
+    {"action": "Reemplazar", "shortcut": "Ctrl+H  o  Ctrl+L", "keywords": ["reemplazar", "replace"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Ir a línea", "shortcut": "Ctrl+G  o  Ctrl+I", "keywords": ["ir a", "go to", "línea"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Insertar fecha y hora", "shortcut": "F5", "keywords": ["fecha", "hora", "date", "time"], "class_names": [], "regions": ["menubar"]},
+    {"action": "Imprimir", "shortcut": "Ctrl+P", "keywords": ["imprimir", "print"], "class_names": [], "regions": []}
+  ]
+}
