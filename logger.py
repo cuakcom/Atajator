@@ -1,17 +1,16 @@
 """
-Logging a archivo de texto junto al ejecutable.
-Permite diagnosticar qué pasa cuando la app se ejecuta sin consola (--windowed).
+Logging a archivo + sistema de observadores para la UI en tiempo real.
 """
 import os
 import sys
 import datetime
 import threading
 
-_lock = threading.Lock()
+_lock      = threading.Lock()
+_observers = []   # callbacks (msg: str) -> None
 
 
 def _log_path() -> str:
-    # Si corre empaquetado por PyInstaller, escribir junto al .exe
     if getattr(sys, "frozen", False):
         base = os.path.dirname(sys.executable)
     else:
@@ -22,11 +21,28 @@ def _log_path() -> str:
 LOG_PATH = _log_path()
 
 
-def log(msg: str):
+def add_observer(callback):
+    """Registra un callback que recibe cada línea de log en tiempo real."""
+    _observers.append(callback)
+
+
+def remove_observer(callback):
     try:
-        ts = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
-        line = f"[{ts}] {msg}\n"
+        _observers.remove(callback)
+    except ValueError:
+        pass
+
+
+def log(msg: str):
+    ts   = datetime.datetime.now().strftime("%H:%M:%S")
+    line = f"[{ts}] {msg}"
+    try:
         with _lock, open(LOG_PATH, "a", encoding="utf-8") as f:
-            f.write(line)
+            f.write(line + "\n")
     except Exception:
         pass
+    for obs in list(_observers):
+        try:
+            obs(line)
+        except Exception:
+            pass

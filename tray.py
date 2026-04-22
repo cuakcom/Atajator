@@ -29,6 +29,7 @@ MF_SEPARATOR     = 0x00000800
 TPM_BOTTOMALIGN  = 0x0020
 TPM_RIGHTALIGN   = 0x0008
 IDI_APPLICATION  = 32512
+ID_PANEL         = 1000
 ID_TOGGLE        = 1001
 ID_EXIT          = 1002
 
@@ -112,10 +113,11 @@ kernel32.GetModuleHandleW.argtypes = [ctypes.wintypes.LPCWSTR]
 
 # ── Clase principal ───────────────────────────────────────────────────
 class TrayIcon:
-    def __init__(self, tooltip: str, on_toggle, on_exit):
+    def __init__(self, tooltip: str, on_toggle, on_exit, on_panel=None):
         self._tooltip   = tooltip
         self._on_toggle = on_toggle
         self._on_exit   = on_exit
+        self._on_panel  = on_panel
         self._hwnd      = None
         self._nid       = None
         self._enabled   = True
@@ -178,7 +180,9 @@ class TrayIcon:
 
     def _show_menu(self):
         hmenu = user32.CreatePopupMenu()
-        label = "Activo (clic para pausar)" if self._enabled else "Pausado (clic para activar)"
+        user32.AppendMenuW(hmenu, MF_STRING, ID_PANEL,  "⌨  Panel de control")
+        user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
+        label = "Pausar detección" if self._enabled else "Reanudar detección"
         user32.AppendMenuW(hmenu, MF_STRING, ID_TOGGLE, label)
         user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
         user32.AppendMenuW(hmenu, MF_STRING, ID_EXIT, "Salir")
@@ -199,7 +203,10 @@ class TrayIcon:
                 return 0
         elif msg == WM_COMMAND:
             cmd = wparam & 0xFFFF
-            if cmd == ID_TOGGLE:
+            if cmd == ID_PANEL:
+                if self._on_panel:
+                    self._on_panel()
+            elif cmd == ID_TOGGLE:
                 self._enabled = not self._enabled
                 self._on_toggle(self._enabled)
             elif cmd == ID_EXIT:

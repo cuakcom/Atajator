@@ -15,6 +15,7 @@ from mouse_hook       import MouseHook
 from app_detector     import AppDetector
 from shortcut_matcher import ShortcutMatcher
 from overlay          import ShortcutOverlay
+from panel            import ControlPanel
 from tray             import TrayIcon
 
 
@@ -29,6 +30,7 @@ class Atajator:
         self.overlay  = ShortcutOverlay(self.root)
         self.detector = AppDetector()
         self.matcher  = ShortcutMatcher()
+        self.panel    = ControlPanel(self.root)
 
         self.hook = MouseHook(self._on_click_thread)
         self._hook_thread = threading.Thread(
@@ -36,9 +38,10 @@ class Atajator:
         )
 
         self.tray = TrayIcon(
-            tooltip   = "Atajator - clic derecho para opciones",
+            tooltip   = "Atajator — clic derecho para opciones",
             on_toggle = self._on_toggle,
             on_exit   = self._on_exit,
+            on_panel  = self._on_open_panel,
         )
 
     def _run_hook(self):
@@ -53,32 +56,39 @@ class Atajator:
 
     def _process_click(self, x: int, y: int):
         try:
-            info = self.detector.get_info(x, y)
-            log(f"CLICK ({x},{y}) proc={info.get('process')!r} "
-                f"region={info.get('region')!r} "
-                f"ctrl_text={info.get('control_text')!r} "
-                f"class={info.get('class_name')!r}")
+            info     = self.detector.get_info(x, y)
             shortcut = self.matcher.find(info)
+
+            proc   = info.get("process", "?")
+            region = info.get("region", "?")
+
             if shortcut:
-                log(f"MATCH {shortcut['shortcut']} - {shortcut['action']} (score={shortcut.get('confidence')})")
+                log(f"MATCH [{proc}] {region} → {shortcut['shortcut']} ({shortcut['action']})")
                 self.overlay.show(shortcut)
             else:
-                log("no match")
+                log(f"skip  [{proc}] {region} — sin match")
+
+            self.panel.add_detection(info, shortcut)
+
         except Exception as e:
-            log(f"PROCESS CLICK ERROR: {type(e).__name__}: {e}")
+            log(f"ERROR en click: {type(e).__name__}: {e}")
 
     def _on_toggle(self, enabled: bool):
         self._enabled = enabled
-        log(f"TOGGLE enabled={enabled}")
+        self.panel.set_active(enabled)
+        log(f"{'Activado' if enabled else 'Pausado'}")
 
     def _on_exit(self):
-        log("EXIT requested from tray")
+        log("Cerrando Atajator")
         self.hook.stop()
         self.root.after(0, self.root.quit)
 
+    def _on_open_panel(self):
+        self.root.after(0, self.panel.show)
+
     def run(self):
-        log("=" * 50)
-        log(f"Atajator iniciado, log={LOG_PATH}")
+        log("=" * 40)
+        log(f"Atajator iniciado")
         self._hook_thread.start()
         self.tray.start()
         self.root.mainloop()
