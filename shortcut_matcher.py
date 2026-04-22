@@ -84,16 +84,14 @@ class ShortcutMatcher:
     @staticmethod
     def _score(entry: dict, text: str, cls: str, region: str) -> int:
         score = 0
+        # Solo keywords y class_names dan puntos. Región no basta sola.
         for kw in entry.get("keywords", []):
             kw_l = kw.lower()
-            if kw_l and kw_l in text:
-                score += 12
-            elif kw_l and text and text[:4] in kw_l:
-                score += 3
+            if kw_l and text and kw_l in text:
+                score += 15          # coincidencia exacta en texto del control
+            elif kw_l and text and len(text) >= 3 and text[:3] in kw_l:
+                score += 5           # coincidencia parcial
         for cn in entry.get("class_names", []):
             if cn.lower() == cls:
-                score += 8
-        for r in entry.get("regions", []):
-            if r == region:
-                score += 5
+                score += 10          # coincidencia exacta de clase Win32
         return score

@@ -31,6 +31,8 @@ class Atajator:
         self.detector = AppDetector()
         self.matcher  = ShortcutMatcher()
         self.panel    = ControlPanel(self.root)
+        self.panel.set_matcher(self.matcher)
+        self.panel.set_toggle_callback(self._on_toggle)
 
         self.hook = MouseHook(self._on_click_thread)
         self._hook_thread = threading.Thread(
