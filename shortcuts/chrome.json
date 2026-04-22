@@ -1,18 +1,20 @@
 {
   "name": "Google Chrome",
   "shortcuts": [
-    {"action": "Nueva pestaña", "shortcut": "Ctrl+T", "keywords": ["nueva pestaña", "new tab"], "class_names": [], "regions": ["titlebar", "toolbar"]},
-    {"action": "Cerrar pestaña", "shortcut": "Ctrl+W", "keywords": ["cerrar", "close", "×"], "class_names": [], "regions": ["titlebar", "toolbar"]},
-    {"action": "Recargar página", "shortcut": "Ctrl+R  o  F5", "keywords": ["recargar", "reload", "refresh"], "class_names": [], "regions": ["menubar", "toolbar"]},
-    {"action": "Barra de direcciones", "shortcut": "Ctrl+L  o  F6", "keywords": ["address", "url", "dirección"], "class_names": ["Chrome_OmniboxView"], "regions": ["menubar", "toolbar"]},
-    {"action": "Abrir historial", "shortcut": "Ctrl+H", "keywords": ["historial", "history"], "class_names": [], "regions": []},
-    {"action": "Abrir descargas", "shortcut": "Ctrl+J", "keywords": ["descargas", "downloads"], "class_names": [], "regions": []},
-    {"action": "Añadir marcador", "shortcut": "Ctrl+D", "keywords": ["marcador", "bookmark", "favorito", "estrella"], "class_names": [], "regions": ["menubar", "toolbar"]},
-    {"action": "Nueva ventana incógnito", "shortcut": "Ctrl+Mayús+N", "keywords": ["incógnito", "privado", "incognito"], "class_names": [], "regions": []},
-    {"action": "Buscar en la página", "shortcut": "Ctrl+F", "keywords": ["buscar", "find", "search"], "class_names": [], "regions": ["content"]},
-    {"action": "Herramientas de desarrollo", "shortcut": "F12  o  Ctrl+Mayús+I", "keywords": ["herramientas", "dev tools", "inspector", "inspect"], "class_names": [], "regions": ["content"]},
-    {"action": "Ampliar zoom", "shortcut": "Ctrl++", "keywords": ["zoom", "ampliar", "acercar"], "class_names": [], "regions": ["content"]},
-    {"action": "Reducir zoom", "shortcut": "Ctrl+-", "keywords": ["zoom", "reducir", "alejar"], "class_names": [], "regions": ["content"]},
-    {"action": "Menú de Chrome", "shortcut": "Alt+F", "keywords": ["menú", "menu", "opciones", "⋮"], "class_names": [], "regions": ["menubar", "toolbar"]}
+    {"action": "Nueva pestaña", "shortcut": "Ctrl+T", "keywords": ["nueva pestaña", "new tab", "crear pestaña"], "class_names": [], "regions": []},
+    {"action": "Cerrar pestaña", "shortcut": "Ctrl+W", "keywords": ["cerrar pestaña", "close tab", "cerrar", "close"], "class_names": [], "regions": []},
+    {"action": "Cambiar a siguiente pestaña", "shortcut": "Ctrl+Tab", "keywords": ["pestaña siguiente", "next tab", "cambiar pestaña", "switch tab"], "class_names": [], "regions": []},
+    {"action": "Cambiar a pestaña anterior", "shortcut": "Ctrl+Mayús+Tab", "keywords": ["pestaña anterior", "previous tab", "pestaña atrás"], "class_names": [], "regions": []},
+    {"action": "Recargar página", "shortcut": "Ctrl+R  o  F5", "keywords": ["recargar", "reload", "refresh", "refrescar"], "class_names": [], "regions": []},
+    {"action": "Barra de direcciones", "shortcut": "Ctrl+L  o  F6", "keywords": ["dirección", "address", "url", "omnibox"], "class_names": ["Chrome_OmniboxView"], "regions": []},
+    {"action": "Abrir historial", "shortcut": "Ctrl+H", "keywords": ["historial", "history", "histor"], "class_names": [], "regions": []},
+    {"action": "Abrir descargas", "shortcut": "Ctrl+J", "keywords": ["descargas", "downloads", "descarga"], "class_names": [], "regions": []},
+    {"action": "Añadir marcador", "shortcut": "Ctrl+D", "keywords": ["marcador", "bookmark", "favorito", "estrella", "guardar"], "class_names": [], "regions": []},
+    {"action": "Nueva ventana incógnito", "shortcut": "Ctrl+Mayús+N", "keywords": ["incógnito", "privado", "incognito", "private"], "class_names": [], "regions": []},
+    {"action": "Buscar en la página", "shortcut": "Ctrl+F", "keywords": ["buscar", "find", "search", "encontrar"], "class_names": [], "regions": []},
+    {"action": "Herramientas de desarrollo", "shortcut": "F12  o  Ctrl+Mayús+I", "keywords": ["herramientas", "dev tools", "inspector", "inspect", "developer"], "class_names": [], "regions": []},
+    {"action": "Ampliar zoom", "shortcut": "Ctrl++", "keywords": ["ampliar", "acercar", "zoom in"], "class_names": [], "regions": []},
+    {"action": "Reducir zoom", "shortcut": "Ctrl+-", "keywords": ["reducir", "alejar", "zoom out"], "class_names": [], "regions": []},
+    {"action": "Menú de Chrome", "shortcut": "Alt+F", "keywords": ["menú", "menu", "opciones", "configuración", "⋮"], "class_names": [], "regions": []}
   ]
 }

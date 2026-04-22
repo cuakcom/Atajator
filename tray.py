@@ -29,6 +29,7 @@ MF_SEPARATOR     = 0x00000800
 TPM_BOTTOMALIGN  = 0x0020
 TPM_RIGHTALIGN   = 0x0008
 IDI_APPLICATION  = 32512
+IDI_INFORMATION  = 32517  # círculo con "i" - más visible y creativo
 ID_PANEL         = 1000
 ID_TOGGLE        = 1001
 ID_EXIT          = 1002
@@ -168,7 +169,7 @@ class TrayIcon:
         nid.uID              = 1
         nid.uFlags           = NIF_MESSAGE | NIF_ICON | NIF_TIP
         nid.uCallbackMessage = TRAY_MSG
-        nid.hIcon            = user32.LoadIconW(None, IDI_APPLICATION)
+        nid.hIcon            = user32.LoadIconW(None, IDI_INFORMATION)
         nid.szTip            = self._tooltip
         self._nid            = nid
         ok = shell32.Shell_NotifyIconW(NIM_ADD, ctypes.byref(nid))
